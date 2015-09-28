@@ -1,0 +1,60 @@
+[ 2015-08-03T20:38:49+08:00 ] ::1 /trader/css/index.css
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000014s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000318s ]
+ERR: 无法加载模块:Css
+
+[ 2015-08-03T20:38:49+08:00 ] ::1 /trader/build/react.js
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000028s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000556s ]
+ERR: 无法加载模块:Build
+
+[ 2015-08-03T20:38:49+08:00 ] ::1 /trader/build/JSXTransformer.js
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000017s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000448s ]
+ERR: 无法加载模块:Build
+
+[ 2015-08-03T20:38:49+08:00 ] ::1 /trader/js/jquery-1.11.3.min.js
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000017s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000396s ]
+ERR: 无法加载模块:Js
+
+[ 2015-08-03T20:38:49+08:00 ] ::1 /trader/js/homepage.js
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000016s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000431s ]
+ERR: 无法加载模块:Js
+
+[ 2015-08-03T20:38:49+08:00 ] ::1 /trader/css/black.css
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000016s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000386s ]
+ERR: 无法加载模块:Css
+
+[ 2015-08-03T20:38:54+08:00 ] ::1 /trader/js/common.js
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000012s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000296s ]
+ERR: 无法加载模块:Js
+
+[ 2015-08-03T21:13:44+08:00 ] ::1 /trader/hm.baidu.com/hm.js?3e8ad816c68f2f465deee1a4168ad880
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000014s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000322s ]
+ERR: 无法加载模块:Hm.baidu.com
+
+[ 2015-08-03T21:14:25+08:00 ] ::1 /trader/hm.baidu.com/hm.js?3e8ad816c68f2f465deee1a4168ad880
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000012s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000294s ]
+ERR: 无法加载模块:Hm.baidu.com
+
+[ 2015-08-03T21:15:06+08:00 ] ::1 /trader/hm.baidu.com/hm.js?3e8ad816c68f2f465deee1a4168ad880
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000015s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000337s ]
+ERR: 无法加载模块:Hm.baidu.com
+
