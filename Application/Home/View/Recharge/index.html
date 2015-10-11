@@ -163,27 +163,28 @@ function close_dig()
                   </select>  
                 </div>
 				</div>
-				
-				
+
               <div class="row">
-                <div class="col-md-12 margin-bottom-15">
+                <div class="col-md-6 margin-bottom-15">
                   <label for="notes">说明</label>
-                  <textarea class="form-control" rows="3" id="comments"></textarea>
+                  <textarea class="form-control" rows="2" id="comments"></textarea>
                 </div>
               </div>
-			  
+
+			  <div class="row templatemo-form-buttons">
+                <div class="col-md-12">
+                  <button type="button" class="btn btn-primary" onclick="redirect()">提交</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <button type="reset" class="btn btn-default">重置</button>    
+                </div>
+              </div>
+
 			  <div class="row">
 				<div class="col-md-6 margin-bottom-15">
 					<input type="hidden" id="userid" name="userid" value="{$userid}">
 				</div>
 			  </div>
 			  
-              <div class="row templatemo-form-buttons">
-                <div class="col-md-12">
-                  <button type="button" class="btn btn-primary" onclick="redirect()">提交</button>
-                  <button type="reset" class="btn btn-default">重置</button>    
-                </div>
-              </div>
+
             </form>
           </div>
         </div>
