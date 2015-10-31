@@ -93,19 +93,19 @@ function close_dig()
             </form>
           </li>
           <li><a href="/pay/index.php/Home/Index/index?userid={$userid}"><i class="fa fa-home"></i>个人账户</a></li>
-          <li class="active"><a href="#"><i class="fa fa-users"></i><span class="badge pull-right">NEW</span>充值</a></li>
-          
-		  <li class="sub">
+          <li><a href="/pay/index.php/Home/Recharge/index?userid={$userid}"><i class="fa fa-users"></i><span class="badge pull-right">NEW</span>充值</a></li>
+		  
+		  <li class="sub open">
             <a href="javascript:;">
               <i class="fa fa-database"></i> 出金管理 <div class="pull-right"><span class="caret"></span></div>
             </a>
             <ul class="templatemo-submenu">
               <li><a href="/pay/index.php/Home/Recharge/bindBankCard?userid={$userid}">绑定银行卡</a></li>
-              <li><a href="/pay/index.php/Home/Recharge/drawDeposit?userid={$userid}">出金</a></li>
+              <li class="active"><a href="#">出金</a></li>
             </ul>
           </li>
 		  
-		  <li><a href="/pay/index.php/Home/Recharge/HistRecharge?userid={$userid}"><i class="fa fa-cog"></i>充值记录</a></li>
+          <li><a href="/pay/index.php/Home/Recharge/HistRecharge?userid={$userid}"><i class="fa fa-cog"></i>充值记录</a></li>
           <li><a href="javascript:;" data-toggle="modal" data-target="#confirmModal"><i class="fa fa-sign-out"></i>退出</a></li>
         </ul>
       </div><!--/.navbar-collapse -->
@@ -113,8 +113,8 @@ function close_dig()
       <div class="templatemo-content-wrapper">
         <div class="templatemo-content">
           <ol class="breadcrumb">
-            <li><a href="index.html">账户管理</a></li>
-            <li><a href="#">充值</a></li>
+            <li><a href="index.html">出金管理</a></li>
+            <li><a href="#">出金</a></li>
             <li class="active"></li>
           </ol>
 
@@ -122,24 +122,28 @@ function close_dig()
           <div class="row">
             <div class="col-md-12">
               <form role="form" id="templatemo-preferences-form">
+                
                 <div class="row">
-                  <div class="col-md-6 margin-bottom-15">
-                    <label for="firstName" class="control-label">商户号</label>
-                     <p class="form-control-static" id="username">{$Mer_code}</p>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-md-6 margin-bottom-15">
-                    <label>用户账号</label>
+                   <div class="col-md-6 margin-bottom-15">
+                    <label>出金银行</label>
                     <p class="form-control-static" id="username">{$username}</p>
-                  </div>
-                  <div class="col-md-6 margin-bottom-15">
-                    <label>用户邮箱</label>
-                    <p class="form-control-static" id="email">{$email}</p>
-                  </div>
+                  </div> 
                 </div>
-    
-                <div class="row">
+				<div class="row">
+                   <div class="col-md-6 margin-bottom-15">
+                    <label>出金账号</label>
+                    <p class="form-control-static" id="email">{$email}</p>
+                  </div> 
+                </div>
+				
+				<div class="row">
+                   <div class="col-md-6 margin-bottom-15">
+                    <label class="control-label" for="inputSuccess">出金金额</label>
+					<input type="text" class="form-control" id="Amount" /> 
+                  </div> 
+                </div>
+				
+				<div class="row">
                   <div class="col-md-6 margin-bottom-15">
                     <label for="password_1">用户密码</label>
                     <input type="password" class="form-control" id="password" placeholder="用户密码" />  
@@ -149,38 +153,6 @@ function close_dig()
                     <input type="password" class="form-control" id="repassword" placeholder="确认密码" />  
                   </div>
                 </div>
-                
-				<div class="row">
-                   <div class="col-md-6 margin-bottom-15">
-                    <label class="control-label" for="inputSuccess">充值金额</label>
-					<input type="text" class="form-control" id="Amount" /> 
-                  </div> 
-                </div>
-				
-				<div class="row">
-                <div class="col-md-6 margin-bottom-15">
-                  <label for="singleSelect">支付币种</label>
-                  <select class="form-control margin-bottom-15" id="Currency_Type">
-                    <option value="RMB" selected="selected">人民币</option>
-                  </select>
-                </div>
-				</div>
-				
-				<div class="row">
-                <div class="col-md-6 margin-bottom-15">
-                  <label for="multipleSelect">支付方式</label>
-                  <select  class="form-control margin-bottom-15" id="Gateway_Type">
-                    <option value="01" selected="selected">借记卡</option>
-                  </select>  
-                </div>
-				</div>
-
-              <div class="row">
-                <div class="col-md-6 margin-bottom-15">
-                  <label for="notes">说明</label>
-                  <textarea class="form-control" rows="2" id="comments"></textarea>
-                </div>
-              </div>
 
 			  <div class="row templatemo-form-buttons">
                 <div class="col-md-12">

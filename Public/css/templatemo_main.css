@@ -221,3 +221,7 @@ h1 { font-size: 24px; }
         padding-right: 0;
     }
 }
+
+.templatemo-submenu >li.active, .templatemo-submenu>li>a:hover {
+    background-color: rgb(191, 232, 167);
+}

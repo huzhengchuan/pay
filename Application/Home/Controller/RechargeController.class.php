@@ -278,5 +278,15 @@ class RechargeController extends Controller {
         return;
     }
 
+    public function bindBankCard()
+    {
+        $this->assign("userid", $_GET['userid']);
+        $this->display();
+    }
 
+    public function drawDeposit()
+    {
+        $this->assign("userid", $_GET['userid']);
+        $this->display();
+    }
 }

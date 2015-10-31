@@ -12,63 +12,6 @@
 
 <script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
 
-<script type="text/javascript">
-
-function redirect()
-{
-	$("#BgDiv").css({ display:"block",height:$(document).height()});
-    var yscroll=document.documentElement.scrollTop;
-    $("#DialogDiv").css("top","300px");
-    $("#DialogDiv").css("display","block");
-    document.documentElement.scrollTop=0;	
-	
-	userid=$("#userid").attr('value');
-	password=$("#password").val();
-	repassword=$("#repassword").val();
-	amount=$("#Amount").val(); 
-	currenttype=$("#Currency_Type").val();
-	gatewaytype=$("#Gateway_Type").val();
-	comments=$("#comments").val();
-	
-	redirect_url = "redirect?userid="+userid+"&password="+password+"&repassword="+
-		repassword+"&currenttype="+currenttype+"&gatewaytype="+gatewaytype+"&comments="+
-		comments+"&amount="+amount;
-	
-	window.open(redirect_url,'target');
-	
-}
-
-function close_dig()
-{
-	$("#BgDiv").css("display","none");
-    $("#DialogDiv").css("display","none");
-	$("#password").val("");
-	$("#repassword").val("");
-	$("#Amount").val("");
-	$("#comments").val("");
-	
-}
-</script>
-    <script type="text/javascript">
-	
-	$("#btnClose").click(function()
-        {
-            $("#BgDiv").css("display","none");
-            $("#DialogDiv").css("display","none");
-        });
-		
-
-    </script>
-
-    <style type="text/css">
-        body,h2{margin:0 ; padding:0;}
-        #BgDiv{background-color:#e3e3e3; position:absolute; z-index:99; left:0; top:0; display:none; width:100%; height:1000px;opacity:0.5;filter: alpha(opacity=50);-moz-opacity: 0.5;}
-        #DialogDiv{position:absolute;width:400px; left:50%; top:50%; margin-left:-200px; height:auto; z-index:100;background-color:#fff; border:1px #8FA4F5 solid; padding:1px;}
-        #DialogDiv h2{ height:25px; font-size:14px; background-color:#8FA4F5; position:relative; padding-left:10px; line-height:25px;}
-        #DialogDiv h2 a{position:absolute; right:5px; font-size:12px; color:#000000}
-        #DialogDiv .form{padding:10px;}
-    </style>
-
 
 <body>
   <div id="main-wrapper">
@@ -93,19 +36,19 @@ function close_dig()
             </form>
           </li>
           <li><a href="/pay/index.php/Home/Index/index?userid={$userid}"><i class="fa fa-home"></i>个人账户</a></li>
-          <li class="active"><a href="#"><i class="fa fa-users"></i><span class="badge pull-right">NEW</span>充值</a></li>
-          
-		  <li class="sub">
+          <li><a href="/pay/index.php/Home/Recharge/index?userid={$userid}"><i class="fa fa-users"></i><span class="badge pull-right">NEW</span>充值</a></li>
+		  
+		  <li class="sub open">
             <a href="javascript:;">
               <i class="fa fa-database"></i> 出金管理 <div class="pull-right"><span class="caret"></span></div>
             </a>
             <ul class="templatemo-submenu">
-              <li><a href="/pay/index.php/Home/Recharge/bindBankCard?userid={$userid}">绑定银行卡</a></li>
+              <li class="active"><a href="#">绑定银行卡</a></li>
               <li><a href="/pay/index.php/Home/Recharge/drawDeposit?userid={$userid}">出金</a></li>
             </ul>
           </li>
 		  
-		  <li><a href="/pay/index.php/Home/Recharge/HistRecharge?userid={$userid}"><i class="fa fa-cog"></i>充值记录</a></li>
+          <li><a href="/pay/index.php/Home/Recharge/HistRecharge?userid={$userid}"><i class="fa fa-cog"></i>充值记录</a></li>
           <li><a href="javascript:;" data-toggle="modal" data-target="#confirmModal"><i class="fa fa-sign-out"></i>退出</a></li>
         </ul>
       </div><!--/.navbar-collapse -->
@@ -113,8 +56,8 @@ function close_dig()
       <div class="templatemo-content-wrapper">
         <div class="templatemo-content">
           <ol class="breadcrumb">
-            <li><a href="index.html">账户管理</a></li>
-            <li><a href="#">充值</a></li>
+            <li><a href="index.html">出金管理</a></li>
+            <li><a href="#">绑定银行卡</a></li>
             <li class="active"></li>
           </ol>
 
@@ -122,21 +65,21 @@ function close_dig()
           <div class="row">
             <div class="col-md-12">
               <form role="form" id="templatemo-preferences-form">
-                <div class="row">
-                  <div class="col-md-6 margin-bottom-15">
-                    <label for="firstName" class="control-label">商户号</label>
-                     <p class="form-control-static" id="username">{$Mer_code}</p>
-                  </div>
+                
+				<div class="row">
+                <div class="col-md-6 margin-bottom-15">
+                  <label for="singleSelect">开户银行</label>
+                  <select class="form-control margin-bottom-15" id="Currency_Type">
+                    <option value="RMB" selected="selected">中国工商银行</option>
+                  </select>
                 </div>
-                <div class="row">
-                  <div class="col-md-6 margin-bottom-15">
-                    <label>用户账号</label>
-                    <p class="form-control-static" id="username">{$username}</p>
-                  </div>
-                  <div class="col-md-6 margin-bottom-15">
-                    <label>用户邮箱</label>
-                    <p class="form-control-static" id="email">{$email}</p>
-                  </div>
+				</div>
+				
+				<div class="row">
+                   <div class="col-md-6 margin-bottom-15">
+                    <label class="control-label" for="inputSuccess">银行卡号</label>
+					<input type="text" class="form-control" id="Amount" /> 
+                  </div> 
                 </div>
     
                 <div class="row">
@@ -150,37 +93,7 @@ function close_dig()
                   </div>
                 </div>
                 
-				<div class="row">
-                   <div class="col-md-6 margin-bottom-15">
-                    <label class="control-label" for="inputSuccess">充值金额</label>
-					<input type="text" class="form-control" id="Amount" /> 
-                  </div> 
-                </div>
 				
-				<div class="row">
-                <div class="col-md-6 margin-bottom-15">
-                  <label for="singleSelect">支付币种</label>
-                  <select class="form-control margin-bottom-15" id="Currency_Type">
-                    <option value="RMB" selected="selected">人民币</option>
-                  </select>
-                </div>
-				</div>
-				
-				<div class="row">
-                <div class="col-md-6 margin-bottom-15">
-                  <label for="multipleSelect">支付方式</label>
-                  <select  class="form-control margin-bottom-15" id="Gateway_Type">
-                    <option value="01" selected="selected">借记卡</option>
-                  </select>  
-                </div>
-				</div>
-
-              <div class="row">
-                <div class="col-md-6 margin-bottom-15">
-                  <label for="notes">说明</label>
-                  <textarea class="form-control" rows="2" id="comments"></textarea>
-                </div>
-              </div>
 
 			  <div class="row templatemo-form-buttons">
                 <div class="col-md-12">
@@ -204,16 +117,6 @@ function close_dig()
 	  
 	  </form>
 
-	  	<div id="BgDiv"></div>
-		<div id="DialogDiv" style="display:none">
-			<h2><a href="#" id="btnClose"></a></h2>
-			请您在新打开的页面上完成付款。<br/>
-			付款完成前请不要关闭此窗口。<br/>
-			完成付款后请根据您的情况点击下面的按钮：<br>
-			<input value="已完成付款" class="but" type="button" id="xxx" onclick="close_dig()"/>
-			<input value="付款遇见问题" class="but" type="button" id="yyyy" onclick="close_dig()"/>
-		</div>	
-		
       <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
