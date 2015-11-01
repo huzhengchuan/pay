@@ -37,6 +37,7 @@
           </li>
           <li><a href="/pay/index.php/Home/Index/index?userid={$userid}"><i class="fa fa-home"></i>个人账户</a></li>
           <li><a href="/pay/index.php/Home/Recharge/index?userid={$userid}"><i class="fa fa-users"></i><span class="badge pull-right">NEW</span>充值</a></li>
+		  <li><a href="/pay/index.php/Home/Recharge/HistRecharge?userid={$userid}"><i class="fa fa-cog"></i>充值记录</a></li>
 		  
 		  <li class="sub open">
             <a href="javascript:;">
@@ -45,19 +46,20 @@
             <ul class="templatemo-submenu">
               <li class="active"><a href="#">绑定银行卡</a></li>
               <li><a href="/pay/index.php/Home/Recharge/drawDeposit?userid={$userid}">出金</a></li>
+			  <li><a href="/pay/index.php/Home/Recharge/histDrawcharge?userid={$userid}">出金记录</a></li>
             </ul>
           </li>
 		  
-          <li><a href="/pay/index.php/Home/Recharge/HistRecharge?userid={$userid}"><i class="fa fa-cog"></i>充值记录</a></li>
+          
           <li><a href="javascript:;" data-toggle="modal" data-target="#confirmModal"><i class="fa fa-sign-out"></i>退出</a></li>
         </ul>
       </div><!--/.navbar-collapse -->
-	<form action="redirect.php" METHOD="POST" name="frm1">	
+	<form action="/pay/index.php/Home/Recharge/bindBankCardOper" method="post" name="bindBankForm">	
       <div class="templatemo-content-wrapper">
         <div class="templatemo-content">
           <ol class="breadcrumb">
             <li><a href="index.html">出金管理</a></li>
-            <li><a href="#">绑定银行卡</a></li>
+            <li><a href="#">绑定账户</a></li>
             <li class="active"></li>
           </ol>
 
@@ -68,28 +70,33 @@
                 
 				<div class="row">
                 <div class="col-md-6 margin-bottom-15">
-                  <label for="singleSelect">开户银行</label>
-                  <select class="form-control margin-bottom-15" id="Currency_Type">
-                    <option value="RMB" selected="selected">中国工商银行</option>
+                  <label for="singleSelect">开户行</label>
+                  <select class="form-control margin-bottom-15" id="bank" name="bank">
+                    <option value="中国工商银行" selected="selected">中国工商银行</option>
+					<option value="中国建设银行">中国建设银行</option>
+					<option value="中国农业银行">中国农业银行</option>
+					<option value="中国银联">中国银联</option>
+					<option value="招商银行">招商银行</option>
+					<option value="支付宝">支付宝</option>
                   </select>
                 </div>
 				</div>
 				
 				<div class="row">
                    <div class="col-md-6 margin-bottom-15">
-                    <label class="control-label" for="inputSuccess">银行卡号</label>
-					<input type="text" class="form-control" id="Amount" /> 
+                    <label class="control-label" for="inputSuccess">卡号</label>
+					<input type="text" class="form-control" id="bankCardNum" name="bankCardNum" /> 
                   </div> 
                 </div>
     
                 <div class="row">
                   <div class="col-md-6 margin-bottom-15">
                     <label for="password_1">用户密码</label>
-                    <input type="password" class="form-control" id="password" placeholder="用户密码" />  
+                    <input type="password" class="form-control" id="password" name="password" placeholder="用户密码" />  
                   </div>
                   <div class="col-md-6 margin-bottom-15">
                     <label for="password_2">确认密码</label>
-                    <input type="password" class="form-control" id="repassword" placeholder="确认密码" />  
+                    <input type="password" class="form-control" id="repassword" name="repassword" placeholder="确认密码" />  
                   </div>
                 </div>
                 
@@ -97,7 +104,7 @@
 
 			  <div class="row templatemo-form-buttons">
                 <div class="col-md-12">
-                  <button type="button" class="btn btn-primary" onclick="redirect()">提交</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <button type="submit" class="btn btn-primary">提交</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <button type="reset" class="btn btn-default">重置</button>    
                 </div>
               </div>
@@ -105,6 +112,12 @@
 			  <div class="row">
 				<div class="col-md-6 margin-bottom-15">
 					<input type="hidden" id="userid" name="userid" value="{$userid}">
+				</div>
+			  </div>
+			  
+			  <div class="row">
+				<div class="col-md-6 margin-bottom-15">
+					<label >{$result}</label>
 				</div>
 			  </div>
 			  

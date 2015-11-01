@@ -120,6 +120,7 @@
           </li>
           <li><a href="/pay/index.php/Home/Index/index?userid={$userid}"><i class="fa fa-home"></i>个人账户</a></li>
 		  <li><a href="/pay/index.php/Home/Recharge/index?userid={$userid}"><i class="fa fa-users"></i><span class="badge pull-right">NEW</span>充值</a></li>
+		  <li class="active"><a href="#"><i class="fa fa-cog"></i>充值记录</a></li>
 		  
 		  <li class="sub">
             <a href="javascript:;">
@@ -128,10 +129,11 @@
             <ul class="templatemo-submenu">
               <li><a href="/pay/index.php/Home/Recharge/bindBankCard?userid={$userid}">绑定银行卡</a></li>
               <li><a href="/pay/index.php/Home/Recharge/drawDeposit?userid={$userid}">出金</a></li>
+			  <li><a href="/pay/index.php/Home/Recharge/histDrawcharge?userid={$userid}">出金记录</a></li>
             </ul>
           </li>
 			
-          <li class="active"><a href="#"><i class="fa fa-cog"></i>充值记录</a></li>
+          
           <li><a href="javascript:;" data-toggle="modal" data-target="#confirmModal"><i class="fa fa-sign-out"></i>退出</a></li>
         </ul>
       </div><!--/.navbar-collapse -->

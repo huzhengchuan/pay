@@ -17,6 +17,7 @@ class RechargeController extends Controller {
         $this->userSer = D('User', 'Service');
         $this->companySer = D('Company', 'Service');
         $this->rechargeSer = D('Recharge', 'Service');
+        $this->drawchargeSer = D('Drawcharge', 'Service');
     }
 
     public function index()
@@ -278,15 +279,191 @@ class RechargeController extends Controller {
         return;
     }
 
+
     public function bindBankCard()
+    {
+        $this->assign("userid", $_GET['userid']);
+        $this->display();
+        return;
+    }
+
+    public function bindBankCardOper()
+    {
+        $bank = $_POST['bank'];
+        $bankCardNum = $_POST['bankCardNum'];
+        $password = $_POST['password'];
+        $rePassword = $_POST['repassword'];
+        $userId = $_POST['userid'];
+
+        if($password != $rePassword)
+        {
+            $this->assign("result", "密码不一致，更新提现账户失败");
+            $this->assign("userid", $userId);
+            $this->display('bindBankCard');
+            return;
+        }
+
+        $user = $this->userSer->getUserFromDBByUserId($userId);
+        if(NULL == $user || $user['password'] != $password)
+        {
+            $this->assign("result", "密码不正确，更新提现账户失败");
+            $this->assign("userid", $userId);
+            $this->display('bindBankCard');
+            return;
+        }
+
+        $user['bindbank'] = $bank;
+        $user['bindcardnum'] = $bankCardNum;
+
+        $ret = $this->userSer->updateUserByDBKey($user['autouserid'], $user);
+        if(false == $ret)
+        {
+            $this->assign("result", "内部错误，更新提现账户失败");
+            $this->assign("userid", $userId);
+            $this->display('bindBankCard');
+            return;
+        }
+
+        $this->assign("userid", $userId);
+        $this->assign("result", "更新提现账户成功");
+        $this->display('bindBankCard');
+        return;
+    }
+
+    public function drawDeposit()
+    {
+
+        $userId = $_GET['userid'];
+
+        $user = $this->userSer->getUserFromDBByUserId($userId);
+        if(NULL == $user)
+        {
+            $this->assign("userid", $userId);
+            $this->display();
+            return;
+        }
+
+        $bank = $user['bindbank'];
+        $bankCardNum = $user['bindcardnum'];
+
+        $this->assign("userid", $userId);
+        $this->assign("bank", $bank);
+        $this->assign("bankCardNum", $bankCardNum);
+        $this->display();
+        return;
+    }
+
+    public function drawDepositOper()
+    {
+        $userId = $_POST['userid'];
+        $money = $_POST['amount'];
+        $password = $_POST['password'];
+        $repassword = $_POST['repassword'];
+
+        $user = $this->userSer->getUserFromDBByUserId($userId);
+        if(NULL == $user || $password != $repassword || $password != $user['password'])
+        {
+            $this->assign("userid", $userId);
+            $this->assign("result", "用户密码错误，提取金额失败");
+            $this->display("drawDeposit");
+            return;
+        }
+
+        $data['drawid'] = date('YmdHis') . mt_rand(100000,999999);
+        $data['userid'] = $userId;
+        $data['drawdate'] = date('Ymd');
+        $data['currency'] = "RMB";
+        $data['amount'] = $money;
+        $data['bank'] = $user['bindbank'];
+        $data['bankcardnum'] = $user['bindcardnum'];
+        $data['status'] = "申请提取";
+
+        $ret = $this->drawchargeSer->createDrawcharge($data);
+        if(false == $ret)
+        {
+            $this->assign("userid", $userId);
+            $this->assign("result", "内部错误，提取金额失败");
+            $this->display("drawDeposit");
+            return;
+        }
+
+        $user['balance'] = $user['balance'] - $money;
+        $ret = $this->userSer->updateUserByDBKey($user['autouserid'], $user);
+        if(false == $ret)
+        {
+            //需要回退
+            $this->assign("userid", $userId);
+            $this->assign("result", "内部错误，提取金额失败");
+            $this->display("drawDeposit");
+            return;
+        }
+
+        $this->assign("userid", $userId);
+        $this->assign("result", "提取金额成功");
+        $this->display("drawDeposit");
+        return;
+
+    }
+
+    public function histDrawcharge()
     {
         $this->assign("userid", $_GET['userid']);
         $this->display();
     }
 
-    public function drawDeposit()
+    public function getHistDrawcharge()
     {
-        $this->assign("userid", $_GET['userid']);
-        $this->display();
+
+        $pageSize = $_POST['rows'];
+        $pageNo = $_POST['page'];
+        $userid = $_GET['userid'];
+        $this->logerSer->logInfo("rows:$pageSize page:$pageNo userid=$userid");
+
+        $totalNum = $this->drawchargeSer->getDrawchargeNumByUserId($userid);
+
+        $pageNum = (int)($totalNum/$pageSize);
+        if(($totalNum - $pageSize*$pageNum) > 0)
+        {
+            $pageNum = $pageNum + 1;
+        }
+        $rangFrom = 0;
+        $rangEnd = 0;
+        if($pageNo != $pageNum)
+        {
+            $rangFrom = ($pageNo - 1)*$pageSize;
+            $rangEnd = $pageNo*$pageSize;
+        }else{
+            $rangFrom = ($pageNum - 1)*$pageSize;
+            $rangEnd = $totalNum;
+        }
+
+        $hists = $this->drawchargeSer->getRangeDrawchargeInfoByUserId($userid, $rangFrom, $rangEnd);
+        if(NULL == $hists)
+        {
+            $this->logerSer->logError("Get hist recharges failed.");
+            return;
+        }
+
+        $count = $totalNum;
+        $rows = array();
+        foreach($hists as $hist)
+        {
+            $obj = new  \stdClass;
+            $obj->drawid = $hist['drawid'];
+            $obj->userid = $hist['userid'];
+            $obj->drawdate = $hist['drawdate'];
+            $obj->amount= $hist['amount'];
+            $obj->currentcy = $hist['currency'];
+            $obj->bank = $hist['bank'];
+            $obj->bankcardnum = $hist['bankcardnum'];
+            $obj->status = $hist['status'];
+            $rows[] = $obj;
+        }
+        $output = new \stdClass;
+        $output->total = $count;
+        $output->rows = $rows;
+        $this->ajaxReturn($output , 'JSON');
+        return;
     }
+
 }

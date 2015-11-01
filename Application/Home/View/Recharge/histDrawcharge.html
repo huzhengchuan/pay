@@ -7,10 +7,13 @@
   <meta name="description" content="" />
   <meta name="viewport" content="width=device-width">        
   <link rel="stylesheet" href="__PUBLIC__/css/templatemo_main.css">
+  <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/easyui/themes/easyui.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/easyui/themes/color.css">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/easyui/demo.css">
+    <script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/js/jquery.easyui.min.js"></script>
 </head>
-
-
-<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
 
 <script type="text/javascript">
 
@@ -74,7 +77,7 @@ function close_dig()
   <div id="main-wrapper">
     <div class="navbar navbar-inverse" role="navigation">
       <div class="navbar-header">
-        <div class="logo"><h1>外汇系统平台管理</h1></div>
+        <div class="logo"><h1>个人账户管理</h1></div>
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
@@ -92,121 +95,48 @@ function close_dig()
               <span class="btn btn-default">Go</span>
             </form>
           </li>
-          <li><a href="/pay/index.php/Home/Index/index?userid={$userid}"><i class="fa fa-home"></i>账户管理</a></li>
-          <li class="active"><a href="#"><i class="fa fa-users"></i><span class="badge pull-right">NEW</span>出金入金</a></li>
-          
-		  <li class="sub">
+          <li><a href="/pay/index.php/Home/Index/index?userid={$userid}"><i class="fa fa-home"></i>个人账户</a></li>
+          <li><a href="/pay/index.php/Home/Recharge/index?userid={$userid}"><i class="fa fa-users"></i><span class="badge pull-right">NEW</span>充值</a></li>
+		  <li><a href="/pay/index.php/Home/Recharge/HistRecharge?userid={$userid}"><i class="fa fa-cog"></i>充值记录</a></li>
+		  <li class="sub open">
             <a href="javascript:;">
-              <i class="fa fa-database"></i> 实时外汇交易 <div class="pull-right"><span class="caret"></span></div>
+              <i class="fa fa-database"></i> 出金管理 <div class="pull-right"><span class="caret"></span></div>
             </a>
             <ul class="templatemo-submenu">
-              <li><a href="/pay/index.php/Home/Recharge/bindBankCard?userid={$userid}">挂单交易</a></li>
-              <li><a href="/pay/index.php/Home/Recharge/drawDeposit?userid={$userid}">外汇交易</a></li>
+              <li><a href="/pay/index.php/Home/Recharge/bindBankCard?userid={$userid}">绑定银行卡</a></li>
+			  <li><a href="/pay/index.php/Home/Recharge/drawDeposit?userid={$userid}">出金</a></li>
+              <li class="active"><a href="#">出金记录</a></li>
             </ul>
           </li>
 		  
-		  <li><a href="/pay/index.php/Home/Recharge/HistRecharge?userid={$userid}"><i class="fa fa-cog"></i>历史外汇交易</a></li>
+          
           <li><a href="javascript:;" data-toggle="modal" data-target="#confirmModal"><i class="fa fa-sign-out"></i>退出</a></li>
         </ul>
       </div><!--/.navbar-collapse -->
-	<form action="redirect.php" METHOD="POST" name="frm1">	
+	<form action="/pay/index.php/Home/Recharge/drawDepositOper" METHOD="POST" name="frm1">	
       <div class="templatemo-content-wrapper">
         <div class="templatemo-content">
           <ol class="breadcrumb">
-            <li><a href="index.html">账户管理</a></li>
-            <li><a href="#">充值</a></li>
+            <li><a href="index.html">出金管理</a></li>
+            <li><a href="#">出金记录</a></li>
             <li class="active"></li>
           </ol>
-		  
-		<div class="row">
-            <div class="col-md-12">
-              <div class="btn-group pull-right" id="templatemo_sort_btn">
-                <button type="button" class="btn btn-default">Sort by</button>
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                  <span class="caret"></span>
-                  <span class="sr-only">Toggle Dropdown</span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">所有</a></li>
-                  <li><a href="#">审核通过</a></li>
-                  <li><a href="#">未审核</a></li>
-				  <li><a href="#">审核未通过</a></li>
-                </ul>
-              </div>
-           
-              <div class="table-responsive">
-                
-                <table class="table table-striped table-hover table-bordered">
-                  <thead>
-                    <tr>
-                      <th>用户ID</th>
-                      <th>用户名</th>
-                      <th>真实姓名</th>
-                      <th>手机号码</th>
-                      <th>Email</th>
-                      <th>处理操作</th>
-                      <th>详细</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>John</td>
-                      <td>Henry</td>
-                      <td>@jh</td>
-                      <td>a@company.com</td>
-                      <td><a href="#" class="btn btn-default">Edit</a></td>                    
-                      <td>
-                        <!-- Split button -->
-                        <div class="btn-group">
-                          <button type="button" class="btn btn-info">Action</button>
-                          <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-                            <span class="caret"></span>
-                            <span class="sr-only">Toggle Dropdown</span>
-                          </button>
-                          <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">Bootstrap</a></li>
-                            <li><a href="#">Font Awesome</a></li>
-                            <li><a href="#">jQuery</a></li>
-                          </ul>
-                        </div>
-                      </td>
-                    </tr>               
-                  </tbody>
-                </table>
-              </div>
-              <ul class="pagination pull-right">
-                <li class="disabled"><a href="#">&laquo;</a></li>
-                <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">2 <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">3 <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">4 <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">5 <span class="sr-only">(current)</span></a></li>
-                <li><a href="#">&raquo;</a></li>
-              </ul>  
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Modal -->
-      <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-              <h4 class="modal-title" id="myModalLabel">Are you sure you want to sign out?</h4>
-            </div>
-            <div class="modal-footer">
-              <a href="sign-in.html" class="btn btn-primary">Yes</a>
-              <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-            </div>
-          </div>
-        </div>
-      </div>
-	  
-		
-		
+		 <table id="dg" title="出金记录" class="easyui-datagrid" style="width:750px;height:500px"
+					url="getHistDrawcharge?userid=1" pagination="true" rownumbers="true" fitColumns="true" singleSelect="true">
+					<thead>
+						<tr>
+							<th field="drawid" width="100">出金流水号</th>
+							<th field="drawdate" width="70">出金时间</th>
+							<th field="amount" width="70">金额</th>
+							<th field="currentcy" width="70">交易币种</th>
+							<th field="bank" width="70">账户银行</th>
+							<th field="bankcardnum" width="70">账户账号</th>
+							<th field="status" width="100">出金状态</th>
+						</tr>
+					</thead>
+		</table>
+		 
         </div>
       </div>
 	  
