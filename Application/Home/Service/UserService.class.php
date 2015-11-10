@@ -182,5 +182,36 @@ class UserService extends Model {
         return true;
     }
 
+    public function getAllUsersCount()
+    {
+        $Model = D('User');
+        if(NULL == $Model)
+        {
+            $this->logerSer->logError("Execute sql failed.");
+            return false;
+        }
+
+        $num =$Model->count();
+        return $num;
+    }
+
+    public function getRangeUsers($from, $to)
+    {
+        $Model = D('User');
+        if(NULL == $Model)
+        {
+            $this->logerSer->logError("Execute sql failed.");
+            return false;
+        }
+
+        $list =$Model->limit($from,$to)->select();
+        if(NULL == $list)
+        {
+            $this->logerSer->logError("find user info failed.");
+            return NULL;
+        }
+        return $list;
+    }
+
 
 }

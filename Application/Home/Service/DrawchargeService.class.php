@@ -128,5 +128,36 @@ class DrawchargeService extends Model {
         return $list;
     }
 
+    public function getAllDrawchargeCount()
+    {
+        $Model = D('Drawcharge');
+        if(NULL == $Model)
+        {
+            $this->logerSer->logError("Execute sql failed.");
+            return false;
+        }
+
+        $num =$Model->count();
+        return $num;
+    }
+
+    public function getRangeDrawcharge()
+    {
+        $Model = D('Drawcharge');
+        if(NULL == $Model)
+        {
+            $this->logerSer->logError("Execute sql failed.");
+            return false;
+        }
+
+        $list =$Model->limit($from,$to)->select();
+        if(NULL == $list)
+        {
+            $this->logerSer->logError("find drawcharage info failed.");
+            return NULL;
+        }
+        return $list;
+    }
+
 
 }

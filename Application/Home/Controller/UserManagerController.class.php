@@ -1,7 +1,7 @@
 <?php
 namespace Home\Controller;
 use Think\Controller;
-class IndexController extends Controller {
+class UserManagerController extends Controller {
 
     private $toolkitSer;
     private $logerSer;

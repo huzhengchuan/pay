@@ -128,5 +128,37 @@ class RechargeService extends Model {
         return $list;
     }
 
+    public function getAllRechargeCount()
+    {
+        $Model = D('Recharge');
+        if(NULL == $Model)
+        {
+            $this->logerSer->logError("Execute sql failed.");
+            return false;
+        }
+
+        $num =$Model->count();
+        return $num;
+    }
+
+    public function getRangeRecharge()
+    {
+        $Model = D('Recharge');
+        if(NULL == $Model)
+        {
+            $this->logerSer->logError("Execute sql failed.");
+            return false;
+        }
+
+        $list =$Model->limit($from,$to)->select();
+        if(NULL == $list)
+        {
+            $this->logerSer->logError("find recharge info failed.");
+            return NULL;
+        }
+        return $list;
+    }
+
+
 
 }

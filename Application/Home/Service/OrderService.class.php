@@ -292,6 +292,104 @@ class OrderService extends Model {
         return true;
     }
 
+    public function getAllPendingOrderCount()
+    {
+        $Model = D("Order");
+        if(NULL == $Model)
+        {
+            $this->logerSer->logError("Execute sql failed.");
+            return false;
+        }
+
+        $result =$Model->fetchSql(false)->where("tradetype>1")->count();
+        return $result;
+    }
+
+    public function getRangePendingOrders($rangFrom, $rangEnd)
+    {
+        $Model = D("Order");
+        if(NULL == $Model)
+        {
+            $this->logerSer->logError("Execute sql failed.");
+            return false;
+        }
+
+        $result =$Model->fetchSql(false)->where('tradetype>1')->limit($rangFrom, $rangEnd)->select();
+        return $result;
+    }
+
+    public function tradeTypeSwitchName($tradeType)
+    {
+        switch ($tradeType)
+        {
+            case "0":
+                return "Buy";
+            case "1":
+                return "Sell";
+            case "2":
+                return "Buy Limit";
+            case "3";
+                return "Sell Limit";
+            case "4":
+                return  "Buy Stop";
+            case "5":
+                return "Sell Stop";
+            default:
+                return "None";
+        }
+    }
+
+    public function getAllOnlineOrderCount()
+    {
+        $Model = D("Order");
+        if(NULL == $Model)
+        {
+            $this->logerSer->logError("Execute sql failed.");
+            return false;
+        }
+
+        $result =$Model->fetchSql(false)->where("tradetype<=1")->count();
+        return $result;
+    }
+
+    public function getRangeOnlineOrders($rangFrom, $rangEnd)
+    {
+        $Model = D("Order");
+        if(NULL == $Model)
+        {
+            $this->logerSer->logError("Execute sql failed.");
+            return false;
+        }
+
+        $result =$Model->fetchSql(false)->where('tradetype<=1')->limit($rangFrom, $rangEnd)->select();
+        return $result;
+    }
+
+    public function getAllHistOrderCount()
+    {
+        $Model = D("HistoryOrder");
+        if(NULL == $Model)
+        {
+            $this->logerSer->logError("Execute sql failed.");
+            return false;
+        }
+
+        $result =$Model->fetchSql(false)->where("istrade=0")->count();
+        return $result;
+    }
+
+    public function getRangeHistOrders($rangFrom, $rangEnd)
+    {
+        $Model = D("HistoryOrder");
+        if(NULL == $Model)
+        {
+            $this->logerSer->logError("Execute sql failed.");
+            return false;
+        }
+
+        $result =$Model->fetchSql(false)->where('istrade=0')->limit($rangFrom, $rangEnd)->select();
+        return $result;
+    }
 
 
 }
