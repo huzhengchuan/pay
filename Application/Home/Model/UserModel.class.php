@@ -14,7 +14,7 @@ class UserModel extends Model {
 			'phonenum', 'mobilenum', 'identitynum',
 			'ischeck', 'levenum', 'balance', 'authnum', 'userAvatar',
             'reemail', 'reemailchecksum', 'rephone', 'rephonechecksum',
-            'repasswordchecksum');
+            'repasswordchecksum', 'bindbank', 'bindcardnum', 'usertype', 'userstatus');
     protected $pk = array('autouserid');
 
 

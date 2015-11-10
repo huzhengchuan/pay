@@ -16,33 +16,45 @@ class UserManagerController extends Controller {
     }
 
 
-	public function index(){
+	public function index()
+    {
+        $this->display();
+        return;
+    }
 
-		$userId = $_GET['userid'];
+    public function loginIn()
+    {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+
         $this->logerSer->logInfo("userId:$userId");
 
-        $user = $this->userSer->getUserFromDBByUserId($userId);
-        if(NULL == $user)
+        $user = $this->userSer->getUserByAccount($email, 'email');
+        if(NULL == $user || $user['password'] != $password)
         {
             $this->logerSer->logError("user auth failed.");
             $this->assign('ErrorMsg', "The user auth failed.");
-            $this->display();
+            $this->display('index');
             return;
         }
+
         if(1 != $user['ischeck'])
         {
             $this->logerSer->logError("user is check failed.");
             $this->assign('ErrorMsg', "The user is checking.");
-            $this->display();
+            $this->display('index');
             return;
         }
 
+        $this->assign('userid', $user['userid']);
         $this->assign('username', $user['petname']);
         $this->assign('email', $user['email']);
         $this->assign('userid', $user['userid']);
         $this->assign('levenum', $user['levenum']);
         $this->assign('balance', $user['balance']);
-        $this->display();
+        $this->assign('usertype', $user['usertype']);
+        $this->assign('userstatus', $user['userstatus']);
+        $this->display('mainpage');
         return;
     }
 }

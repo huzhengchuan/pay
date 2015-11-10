@@ -3,7 +3,7 @@
  * @Author: huzhengchuan
  * @Date:   2015-10-31 02:44:30
  * @Last Modified by:   anchen
- * @Last Modified time: 2015-11-10 20:01:51
+ * @Last Modified time: 2015-11-10 21:30:48
  */
 namespace Home\Controller;
 use Think\Controller;
@@ -16,6 +16,7 @@ class SysManagerController extends Controller {
     private $rechargeSer;
     private $drawchargeSer;
     private $orderSer;
+    private $sysUserSer;
 
     public function __construct()
     {
@@ -26,14 +27,9 @@ class SysManagerController extends Controller {
         $this->rechargeSer = D('Recharge', 'Service');
         $this->drawchargeSer = D('Drawcharge', 'Service');
         $this->orderSer = D('Order', 'Service');
+        $this->sysUserSer = D('SysUser', 'Service');
     }
 
-
-    public function index()
-    {
-        $this->display();
-        return;
-    }
 
     public function splitePage($totalNum, $pageSize, $pageNo)
     {
@@ -91,8 +87,8 @@ class SysManagerController extends Controller {
             $obj->balance = $user['balance'];
             $obj->bindbank = $user['bindbank'];
             $obj->bindcardnum = $user['bindcardnum'];
-            $obj->usertype = "注册用户"; //$user['usertype'];
-            $obj->userstatus = "审核通过"; //$user['userstatus'];
+            $obj->usertype = $user['usertype'];
+            $obj->userstatus = $user['userstatus'];
             $rows[] = $obj;
         }
         $output = new \stdClass;
@@ -358,6 +354,29 @@ class SysManagerController extends Controller {
         $output->rows = $rows;
         $this->ajaxReturn($output , 'JSON');
         return;
+    }
+
+
+
+    public function Index()
+    {
+        $this->display();
+    }
+
+    public function loginIn()
+    {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+
+        $user = $this->sysUserSer->getUserByEmail($email);
+        if($user == NULL || $user['password'] != $password)
+        {
+            $this->display('index');
+            return;
+        }
+        $this->display('SysManager:mainpage');
+        return;
+
     }
 
 }
