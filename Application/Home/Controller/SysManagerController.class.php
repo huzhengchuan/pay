@@ -3,7 +3,7 @@
  * @Author: huzhengchuan
  * @Date:   2015-10-31 02:44:30
  * @Last Modified by:   anchen
- * @Last Modified time: 2015-11-10 21:30:48
+ * @Last Modified time: 2015-11-11 23:55:10
  */
 namespace Home\Controller;
 use Think\Controller;
@@ -377,6 +377,57 @@ class SysManagerController extends Controller {
         $this->display('SysManager:mainpage');
         return;
 
+    }
+
+    public function auditUsers()
+    {
+        $userlist = $_POST['users'];
+        $flag = $_POST['flag'];
+        $errorFlag = 0;
+        $message = "";
+
+        if($userlist == NULL || $flag == NULL)
+        {
+            $message="update failed.";
+            $this->ajaxReturn($message, 'JSON');
+            return;
+        }
+
+        $users = explode(",", userlist);
+        foreach($users as $userId)
+        {
+            if("1" == $flag)
+            {
+                $userstatus = "审核通过";
+            }else{
+                $userstatus = "审核不通过";
+            }
+            $user = $this->userSer->getUserFromDBByUserId($userId);
+            if($user == NULL)
+            {
+                $errorFlag = 1;
+                $this->logerSer->logError("Get user $userId info in db failed.");
+                continue;
+            }
+            $user['userstatus'] = $userstatus;
+            $ret = $this->userSer->updateUserByDBKey($user['autouserid'], $user);
+            if($ret == false)
+            {
+                $errorFlag = 1;
+                $this->logerSer->logError("Update user $userId audit info in db failed.");
+                continue;
+            }
+            $this->logerSer->logInfo("Update user $userid audit info in db success.");
+        }
+
+        if(1 == $errorFlag)
+        {
+            $message = "update user failed";
+        }else{
+            $message = "update user success.";
+        }
+        $this->ajaxReturn($message, 'JSON');
+        return;
     }
 
 }
