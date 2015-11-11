@@ -14,9 +14,14 @@
   <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/easyui/demo.css">
   <script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
   <script type="text/javascript" src="__PUBLIC__/js/jquery.easyui.min.js"></script>
-</head>
 
-<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+<script type="text/javascript">
+    $('#signout').click(function () {
+      this.window.opener = null;  
+	  window.close();  
+	});
+</script>
+</head>
     
 <body>
   <div id="main-wrapper">
@@ -40,7 +45,7 @@
               <span class="btn btn-default">Go</span>
             </form>
           </li>
-          <li><a href="/pay/index.php/Home/SysManager/index"><i class="fa fa-home"></i>账户管理</a></li>
+          <li><a href="/pay/index.php/Home/SysManager/mainpage"><i class="fa fa-home"></i>账户管理</a></li>
 		  
 		  <li class="sub">
             <a href="javascript:;">
@@ -149,14 +154,7 @@
       </footer>
     </div>
 </div>
-    <script src="__PUBLIC__/js/jquery.min.js"></script>
-    <script src="__PUBLIC__/js/bootstrap.min.js"></script>
-    <script src="__PUBLIC__/js/templatemo_script.js"></script>
-	<script type="text/javascript">
-    $('#signout').click(function () {
-      this.window.opener = null;  
-	  window.close();  
-	});
-  </script>
+
+
   </body>
 </html>
