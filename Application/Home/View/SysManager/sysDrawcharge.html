@@ -14,10 +14,75 @@
   <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/easyui/demo.css">
   <script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
   <script type="text/javascript" src="__PUBLIC__/js/jquery.easyui.min.js"></script>
-</head>
 
-<script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
-    
+<script type="text/javascript">
+		var toolbar = [
+			{
+				text:'Approve',
+				iconCls:'icon-add',
+				handler:function(){audit('1')}
+			},
+			{
+				text:'Reject',
+				iconCls:'icon-undo',
+				handler:function(){audit('2')}
+			}
+		];
+		
+		$('#dg').datagrid({
+			onSortColumn: function (sort, order) {
+            fun1(sort, order);
+			}
+		})
+		
+		function audit(flag){
+				var row = $('#dg').datagrid('getChecked');
+				var i = 0;
+		        var str = "";
+		        for(i;i<row.length;i++)
+				{
+		            str += row[i].drawid;
+		            if(i < row.length-1){
+		                str += ',';
+		            }else{
+		                break;
+		            }
+		        }	
+				if (row.length== 0) {
+					alert("请选择要审批出金申请");
+					return;
+				}
+				if (row.length>0) {  
+					$.messager.confirm('Confirm', '确定审批选择的出金申请?', function(r) {
+						if (r) 
+						{
+							 $.post('/pay/index.php/Home/SysManager/auditDrawcharge', 
+								{ charges : str, flag: flag
+								}, function(result) {
+									$.messager.show({
+										title:'操作提示',
+										msg:result,
+										showType:'show'
+									});
+									$('#dg').datagrid('reload');}
+								  );
+						}
+					});
+				}
+				
+			}
+</script>
+
+
+<script type="text/javascript">
+    $('#signout').click(function () {
+      this.window.opener = null;  
+	  window.close();  
+	});
+</script> 
+
+</head>  
+
 <body>
   <div id="main-wrapper">
     <div class="navbar navbar-inverse" role="navigation">
@@ -40,7 +105,7 @@
               <span class="btn btn-default">Go</span>
             </form>
           </li>
-          <li><a href="/pay/index.php/Home/SysManager/index"><i class="fa fa-home"></i>账户管理</a></li>
+          <li><a href="/pay/index.php/Home/SysManager/mainpage"><i class="fa fa-home"></i>账户管理</a></li>
 		  
 		  <li class="sub open">
             <a href="javascript:;">
@@ -75,10 +140,12 @@
             <li class="active"></li>
           </ol>
 		
-		 <table id="dg" title="出金信息" class="easyui-datagrid" style="width:100%;height:100%"
-					url="sysGetDrawchargeList" pagination="true" rownumbers="true" fitColumns="true" singleSelect="true">
+
+		<table id="dg" title="出金信息" class="easyui-datagrid" style="width:100%;height:100%" 
+			data-options="rownumbers:true,singleSelect:false,checkbox:true, url:'/pay/index.php/Home/SysManager/sysGetDrawchargeList',method:'get',toolbar:toolbar,pagination:true">
 					<thead>
 						<tr>
+							<th field="ck" checkbox="true" width="3%"></th>
 							<th field="drawid" width="10%">账单流水号</th>
 							<th field="userid" width="10%">用户ID</th>
 							<th field="username" width="10%">用户名</th>
@@ -145,14 +212,7 @@
       </footer>
     </div>
 </div>
-    <script src="__PUBLIC__/js/jquery.min.js"></script>
-    <script src="__PUBLIC__/js/bootstrap.min.js"></script>
-    <script src="__PUBLIC__/js/templatemo_script.js"></script>
-	<script type="text/javascript">
-    $('#signout').click(function () {
-      this.window.opener = null;  
-	  window.close();  
-	});
-  </script>
+
+	
   </body>
 </html>

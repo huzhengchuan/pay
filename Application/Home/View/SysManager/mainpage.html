@@ -19,14 +19,29 @@
 
   
 <script type="text/javascript">
-		var toolbar = [{
-			text:'Approve',
-			iconCls:'icon-add',
-			handler:function(){
-				var row = $('#gd').datagrid('getChecked');
+		var toolbar = [
+			{
+				text:'Approve',
+				iconCls:'icon-add',
+				handler:function(){audit('1')}
+			},
+			{
+				text:'Reject',
+				iconCls:'icon-undo',
+				handler:function(){audit('2')}
+			}
+		];
+		
+		$('#dg').datagrid({
+			onSortColumn: function (sort, order) {
+            fun1(sort, order);
+			}
+		})
+		
+		function audit(flag){
+				var row = $('#dg').datagrid('getChecked');
 				var i = 0;
 		        var str = "";
-				alert(row.length);
 		        for(i;i<row.length;i++)
 				{
 		            str += row[i].userid;
@@ -36,37 +51,29 @@
 		                break;
 		            }
 		        }	
-				alert(str);
 				if (row.length== 0) {
 					alert("请选择要审批的用户");
 					return;
 				}
 				if (row.length>0) {  
-					$.messager.confirm('Confirm', '确定审批通过选择的用户?', function(r) {
+					$.messager.confirm('Confirm', '确定审批选择的用户?', function(r) {
 						if (r) 
 						{
-							 $.post('deleteuser', 
-								{ users : str
-								  }, function(result) { 
-								  $('#dg').datagrid('reload');}
+							 $.post('/pay/index.php/Home/SysManager/auditUsers', 
+								{ users : str, flag: flag
+								}, function(result) {
+									$.messager.show({
+										title:'操作提示',
+										msg:result,
+										showType:'show'
+									});
+									$('#dg').datagrid('reload');}
 								  );
 						}
 					});
 				}
 				
 			}
-		},
-		{
-			text:'Reject',
-			iconCls:'icon-undo',
-			handler:function(){alert('undo')}
-		}];
-		
-		$('#gd').datagrid({
-			onSortColumn: function (sort, order) {
-            fun1(sort, order);
-        }
-})
 </script>
 
 <script type="text/javascript">
@@ -131,12 +138,12 @@
         <div class="templatemo-content">
           <ol class="breadcrumb">
             <li><a href="index.html">账户管理</a></li>
-            <li><a href="#">充值</a></li>
+            <li><a href="#">账户</a></li>
             <li class="active"></li>
           </ol>
 		
-		 <table id="gd" title="账户信息" class="easyui-datagrid" style="width:100%;height:100%" 
-			data-options="rownumbers:true,singleSelect:false,checkbox:true, url:'/pay/index.php/Home/SysManager/getUserList',method:'get',toolbar:toolbar">
+		 <table id="dg" title="账户信息" class="easyui-datagrid" style="width:100%;height:100%" 
+			data-options="rownumbers:true,singleSelect:false,checkbox:true, url:'/pay/index.php/Home/SysManager/getUserList',method:'get',toolbar:toolbar,pagination:true">
 			<thead>
 						<tr>
 							<th field="ck" checkbox="true" width="3%"></th>

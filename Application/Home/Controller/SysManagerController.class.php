@@ -3,7 +3,7 @@
  * @Author: huzhengchuan
  * @Date:   2015-10-31 02:44:30
  * @Last Modified by:   anchen
- * @Last Modified time: 2015-11-11 23:55:10
+ * @Last Modified time: 2015-11-12 01:00:34
  */
 namespace Home\Controller;
 use Think\Controller;
@@ -378,6 +378,11 @@ class SysManagerController extends Controller {
         return;
 
     }
+    public function mainpage()
+    {
+         $this->display('SysManager:mainpage');
+        return;
+    }
 
     public function auditUsers()
     {
@@ -393,14 +398,14 @@ class SysManagerController extends Controller {
             return;
         }
 
-        $users = explode(",", userlist);
+        $users = explode(",", $userlist);
         foreach($users as $userId)
         {
             if("1" == $flag)
             {
-                $userstatus = "���ͨ��";
+                $userstatus = "审核通过";
             }else{
-                $userstatus = "��˲�ͨ��";
+                $userstatus = "审核不通过";
             }
             $user = $this->userSer->getUserFromDBByUserId($userId);
             if($user == NULL)
@@ -425,6 +430,64 @@ class SysManagerController extends Controller {
             $message = "update user failed";
         }else{
             $message = "update user success.";
+        }
+        $this->ajaxReturn($message, 'JSON');
+        return;
+    }
+
+    public function auditDrawcharge()
+    {
+        $chargeslist = $_POST['charges'];
+        $flag = $_POST['flag'];
+        $errorFlag = 0;
+        $message = "";
+        $status = "";
+
+        if($chargeslist == NULL || $flag == NULL)
+        {
+            $message="update failed.";
+            $this->ajaxReturn($message, 'JSON');
+            return;
+        }
+
+        $charges = explode(",", $chargeslist);
+        foreach($charges as $drawId)
+        {
+            if("1" == $flag)
+            {
+                $status = "申请通过";
+            }else{
+                $status = "申请不通过";
+            }
+            $drawcharge = $this->drawchargeSer->getDrawchargeById($drawId);
+            if($drawcharge == NULL)
+            {
+                $errorFlag = 1;
+                $this->logerSer->logError("Get drawcharge $drawId info in db failed.");
+                continue;
+            }
+
+            if($drawcharge['status'] != "申请提取")
+            {
+                $this->logerSer->logError("The drawcharge has already audit.");
+                continue;
+            }
+
+            $ret = $this->drawchargeSer->updateDrawchargeStatusById($drawcharge['drawid'], $status);
+            if($ret == false)
+            {
+                $errorFlag = 1;
+                $this->logerSer->logError("Update drawcharge $drawId audit info in db failed.");
+                continue;
+            }
+            $this->logerSer->logInfo("Update user drawcharge $drawId info in db success.");
+        }
+
+        if(1 == $errorFlag)
+        {
+            $message = "update drawcharge failed";
+        }else{
+            $message = "update drawcharge success.";
         }
         $this->ajaxReturn($message, 'JSON');
         return;
