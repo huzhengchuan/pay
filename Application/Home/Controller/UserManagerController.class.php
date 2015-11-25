@@ -18,7 +18,37 @@ class UserManagerController extends Controller {
 
 	public function index()
     {
-        $this->display();
+        $userid=$_COOKIE['userid'];
+        if($userid == NULL)
+        {
+            $this->logerSer->logError("The user cookie is not exist.");
+            echo "The user is not exist.";
+            $this->display('mainpage');
+            return;
+        }
+
+        $user = $this->userSer->getUserFromDBByUserId($userid);
+        if($user == NULL)
+        {
+            $this->logerSer->logError("The user is not exist.");
+            echo "The user is not exist.";
+            $this->display('mainpage');
+            return;
+        }
+
+        $this->assign('userid', $user['userid']);
+        $this->assign('username', $user['petname']);
+        $this->assign('email', $user['email']);
+        $this->assign('userid', $user['userid']);
+        $this->assign('levenum', $user['levenum']);
+        $this->assign('bindcardnum', $user['bindcardnum']);
+        $this->assign('balance', $user['balance']);
+        $this->assign('usertype', $user['usertype']);
+        $this->assign('userstatus', $user['userstatus']);
+
+
+        $this->assign('userid', $userid);
+        $this->display('info');
         return;
     }
 
@@ -45,6 +75,8 @@ class UserManagerController extends Controller {
             $this->display('index');
             return;
         }
+
+        cookie('userid',$user['userid']);
 
         $this->assign('userid', $user['userid']);
         $this->assign('username', $user['petname']);

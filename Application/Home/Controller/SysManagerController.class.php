@@ -3,7 +3,7 @@
  * @Author: huzhengchuan
  * @Date:   2015-10-31 02:44:30
  * @Last Modified by:   anchen
- * @Last Modified time: 2015-11-12 01:00:34
+ * @Last Modified time: 2015-11-25 22:41:14
  */
 namespace Home\Controller;
 use Think\Controller;
@@ -28,6 +28,12 @@ class SysManagerController extends Controller {
         $this->drawchargeSer = D('Drawcharge', 'Service');
         $this->orderSer = D('Order', 'Service');
         $this->sysUserSer = D('SysUser', 'Service');
+    }
+
+    public function  userinfo()
+    {
+        $this->display();
+        return;
     }
 
 

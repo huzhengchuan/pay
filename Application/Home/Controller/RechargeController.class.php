@@ -23,7 +23,7 @@ class RechargeController extends Controller {
     public function index()
     {
 
-        $userId = $_GET['userid'];
+        $userId=$_COOKIE['userid'];
         if(NULL == $userId)
         {
             $this->logerSer->logError("The userid in https is not right");
@@ -92,6 +92,7 @@ class RechargeController extends Controller {
         $encodeType = "5";
         $retEncodeType = 17;
 
+        $amount = number_format($amount, 2, '.', '');
         $orge = 'billno'.$billNo.'currencytype'.$currencytype.'amount'.$amount.'date'.$billDate.'orderencodetype'.$encodeType.$company['certificate'];
         $signMD5 = md5($orge);
 
@@ -221,7 +222,6 @@ class RechargeController extends Controller {
 
     public function HistRecharge()
     {
-        $this->assign("userid", $_GET['userid']);
         $this->display();
     }
 
@@ -231,6 +231,13 @@ class RechargeController extends Controller {
         $pageSize = $_POST['rows'];
         $pageNo = $_POST['page'];
         $userid = $_GET['userid'];
+        $userid = $_COOKIE['userid'];
+        if(NULL == $userid)
+        {
+            $this->logerSer->logError("The userid in https is not right");
+            echo "System Inner Error.";
+            return;
+        }
         $this->logerSer->logInfo("rows:$pageSize page:$pageNo userid=$userid");
 
         $totalNum = $this->rechargeSer->getRechargeNumByUserId($userid);
@@ -282,7 +289,6 @@ class RechargeController extends Controller {
 
     public function bindBankCard()
     {
-        $this->assign("userid", $_GET['userid']);
         $this->display();
         return;
     }
@@ -293,22 +299,22 @@ class RechargeController extends Controller {
         $bankCardNum = $_POST['bankCardNum'];
         $password = $_POST['password'];
         $rePassword = $_POST['repassword'];
-        $userId = $_POST['userid'];
+        $userId = $_COOKIE['userid'];
 
         if($password != $rePassword)
         {
-            $this->assign("result", "密码不一致，更新提现账户失败");
-            $this->assign("userid", $userId);
-            $this->display('bindBankCard');
+            $result = "更新绑定的银行卡失败：用户名或密码不正确";
+            $this->logerSer->logError($result);
+            $this->ajaxReturn($result, 'JSON');
             return;
         }
 
         $user = $this->userSer->getUserFromDBByUserId($userId);
         if(NULL == $user || $user['password'] != $password)
         {
-            $this->assign("result", "密码不正确，更新提现账户失败");
-            $this->assign("userid", $userId);
-            $this->display('bindBankCard');
+            $result = "更新绑定的银行卡失败：用户名或密码不正确";
+            $this->logerSer->logError($result);
+            $this->ajaxReturn($result, 'JSON');
             return;
         }
 
@@ -318,22 +324,22 @@ class RechargeController extends Controller {
         $ret = $this->userSer->updateUserByDBKey($user['autouserid'], $user);
         if(false == $ret)
         {
-            $this->assign("result", "内部错误，更新提现账户失败");
-            $this->assign("userid", $userId);
-            $this->display('bindBankCard');
+            $result = "更新绑定的银行卡失败：内部错误.";
+            $this->logerSer->logError($result);
+            $this->ajaxReturn($result, 'JSON');
             return;
         }
 
-        $this->assign("userid", $userId);
-        $this->assign("result", "更新提现账户成功");
-        $this->display('bindBankCard');
+        $result = "更新绑定的银行卡成功.";
+        $this->logerSer->logError($result);
+        $this->ajaxReturn($result, 'JSON');
         return;
     }
 
     public function drawDeposit()
     {
 
-        $userId = $_GET['userid'];
+        $userId = $_COOKIE['userid'];
 
         $user = $this->userSer->getUserFromDBByUserId($userId);
         if(NULL == $user)
@@ -355,7 +361,7 @@ class RechargeController extends Controller {
 
     public function drawDepositOper()
     {
-        $userId = $_POST['userid'];
+        $userId = $_COOKIE['userid'];
         $money = $_POST['amount'];
         $password = $_POST['password'];
         $repassword = $_POST['repassword'];
@@ -363,9 +369,8 @@ class RechargeController extends Controller {
         $user = $this->userSer->getUserFromDBByUserId($userId);
         if(NULL == $user || $password != $repassword || $password != $user['password'])
         {
-            $this->assign("userid", $userId);
-            $this->assign("result", "用户密码错误，提取金额失败");
-            $this->display("drawDeposit");
+            $result = "用户密码错误，提取金额失败";
+            $this->ajaxReturn($result, 'JSON');
             return;
         }
 
@@ -381,9 +386,8 @@ class RechargeController extends Controller {
         $ret = $this->drawchargeSer->createDrawcharge($data);
         if(false == $ret)
         {
-            $this->assign("userid", $userId);
-            $this->assign("result", "内部错误，提取金额失败");
-            $this->display("drawDeposit");
+            $result = "内部错误，提取金额失败";
+            $this->ajaxReturn($result, 'JSON');
             return;
         }
 
@@ -392,22 +396,19 @@ class RechargeController extends Controller {
         if(false == $ret)
         {
             //需要回退
-            $this->assign("userid", $userId);
-            $this->assign("result", "内部错误，提取金额失败");
-            $this->display("drawDeposit");
+            $result = "内部错误，提取金额失败";
+            $this->ajaxReturn($result, 'JSON');
             return;
         }
 
-        $this->assign("userid", $userId);
-        $this->assign("result", "提取金额成功");
-        $this->display("drawDeposit");
+        $result = "提取金额成功";
+        $this->ajaxReturn($result, 'JSON');
         return;
 
     }
 
     public function histDrawcharge()
     {
-        $this->assign("userid", $_GET['userid']);
         $this->display();
     }
 
@@ -416,7 +417,7 @@ class RechargeController extends Controller {
 
         $pageSize = $_POST['rows'];
         $pageNo = $_POST['page'];
-        $userid = $_GET['userid'];
+        $userid = $_COOKIE['userid'];
         $this->logerSer->logInfo("rows:$pageSize page:$pageNo userid=$userid");
 
         $totalNum = $this->drawchargeSer->getDrawchargeNumByUserId($userid);

@@ -62,6 +62,11 @@ class RechargeService extends Model {
 
     public function getRechargeById($rechargeid)
     {
+        if($rechargeid == NULL)
+        {
+            return NULL;
+        }
+
         $Model = D('Recharge');
         if(NULL == $Model)
         {

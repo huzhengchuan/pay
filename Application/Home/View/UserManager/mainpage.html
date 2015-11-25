@@ -7,8 +7,133 @@
   <meta name="description" content="" />
   <meta name="viewport" content="width=device-width">        
   <link rel="stylesheet" href="__PUBLIC__/css/templatemo_main.css">
+  <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/easyui/themes/easyui.css">
+  <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/easyui/themes/icon.css">
+  <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/easyui/themes/color.css">
+  <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/easyui/demo.css">
+  
+  
+  <script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
+  <script type="text/javascript" src="__PUBLIC__/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="__PUBLIC__/js/Chart.min.js"></script>
+  <script type="text/javascript" src="__PUBLIC__/js/templatemo_script.js"></script>
+  <script type="text/javascript" src="__PUBLIC__/js/usermanager_script.js"></script>
+  <script type="text/javascript" src="__PUBLIC__/js/jquery.easyui.min.js"></script> 
+  <script type="text/javascript" src="__PUBLIC__/js/jquery.json.js"></script>
+    
+  
+  <script type="text/javascript">
+    $('#signout').click(function () {
+      this.window.opener = null;  
+	  window.close();  
+	});
+	
+	$("#btnClose").click(function()
+        {
+            $("#BgDiv").css("display","none");
+            $("#DialogDiv").css("display","none");
+        });
+  </script>
+
+    <style type="text/css">
+        body,h2{margin:0 ; padding:0;}
+        #BgDiv{background-color:#e3e3e3; position:absolute; z-index:99; left:0; top:0; display:none; width:100%; height:1000px;opacity:0.5;filter: alpha(opacity=50);-moz-opacity: 0.5;}
+        #DialogDiv{position:absolute;width:400px; left:50%; top:50%; margin-left:-200px; height:auto; z-index:100;background-color:#fff; border:1px #8FA4F5 solid; padding:1px;}
+        #DialogDiv h2{ height:25px; font-size:14px; background-color:#8FA4F5; position:relative; padding-left:10px; line-height:25px;}
+        #DialogDiv h2 a{position:absolute; right:5px; font-size:12px; color:#000000}
+        #DialogDiv .form{padding:10px;}
+    </style>
+
+	<style type="text/css">
+        #fm{
+            margin:0;
+            padding:10px 30px;
+        }
+        .ftitle{
+            font-size:14px;
+            font-weight:bold;
+            padding:5px 0;
+            margin-bottom:10px;
+            border-bottom:1px solid #ccc;
+        }
+        .fitem{
+            margin-bottom:5px;
+        }
+        .fitem label{
+            display:inline-block;
+            width:80px;
+        }
+        .fitem input{
+            width:160px;
+        }
+    </style> 
+	
+  <script type="text/javascript">
+	function finish(data)
+	{
+		var divshow = $("#showInfo2");
+        divshow.text("");
+        divshow.append(data); 
+	}
+	
+	function clearStyle()
+	{
+		$("#guide_user").attr("class", "");
+		$("#guide_recharage").attr("class", "");
+		$("#guide_recharage_hist").attr("class", "");
+		$("#guide_bindcard").attr("class", "");
+		$("#guide_drawdeposit").attr("class", "");
+		$("#guide_histdrawcharge").attr("class", "");
+	}
+	
+	function clickOper(type)
+	{
+		var url_link;
+		
+		clearStyle();
+		
+		switch(type)
+		{
+			case 1:
+				$("#guide_user").attr("class", "active");
+				url_link = '/pay/index.php/Home/UserManager/index';
+				break;
+			case 2:
+				$("#guide_recharage").attr("class", "active");
+				url_link = '/pay/index.php/Home/Recharge/index';
+				break;
+			case 3:
+				$("#guide_recharage_hist").attr("class", "active");
+				url_link = '/pay/index.php/Home/Recharge/HistRecharge';
+				break;
+			case 4:
+				$("#guide_bindcard").attr("class", "active");
+				url_link = '/pay/index.php/Home/Recharge/bindBankCard';
+				break;
+			case 5:
+				$("#guide_drawdeposit").attr("class", "active");
+				url_link = '/pay/index.php/Home/Recharge/drawDeposit';
+				break;
+			case 6:
+				$("#guide_histdrawcharge").attr("class", "active");
+				url_link = '/pay/index.php/Home/Recharge/histDrawcharge';
+				break;
+			default:
+				url_link = '/pay/index.php/Home/UserManger/error';
+				break;
+		}
+		
+		$.ajax({
+			type: 'POST',
+			url: url_link,
+			success: finish
+		});
+	}
+  </script>
+  
+  
 </head>
-<body>
+<body onload="clickOper(1)">
   <div class="navbar navbar-inverse" role="navigation">
       <div class="navbar-header">
         <div class="logo"><h1>个人账户管理</h1></div>
@@ -20,7 +145,7 @@
         </button> 
       </div>   
     </div>
-    <div class="template-page-wrapper">
+    
       <div class="navbar-collapse collapse templatemo-sidebar">
         <ul class="templatemo-sidebar-menu">
           <li>
@@ -29,109 +154,38 @@
               <span class="btn btn-default">Go</span>
             </form>
           </li>
-          <li class="active"><a href="#"><i class="fa fa-home"></i>个人账户</a></li>
-		  <li><a href="/pay/index.php/Home/Recharge/index?userid={$userid}"><i class="fa fa-users"></i><span class="badge pull-right">NEW</span>充值</a></li>
-		  <li><a href="/pay/index.php/Home/Recharge/HistRecharge?userid={$userid}"><i class="fa fa-cog"></i>充值记录</a></li>
+          <li id="guide_user"><a onclick="javascript:clickOper(1);"><i class="fa fa-home"></i>个人账户</a></li>
+		  <li id="guide_recharage"><a onclick="javascript:clickOper(2);"><i class="fa fa-users"></i><span class="badge pull-right">NEW</span>充值</a></li>
+		  <li id="guide_recharage_hist"><a onclick="javascript:clickOper(3);" ><i class="fa fa-cog"></i>充值记录</a></li>
 		  <li class="sub">
             <a href="javascript:;">
               <i class="fa fa-database"></i> 出金管理 <div class="pull-right"><span class="caret"></span></div>
             </a>
             <ul class="templatemo-submenu">
-              <li><a href="/pay/index.php/Home/Recharge/bindBankCard?userid={$userid}">绑定银行卡</a></li>
-              <li><a href="/pay/index.php/Home/Recharge/drawDeposit?userid={$userid}">出金</a></li>
-			  <li><a href="/pay/index.php/Home/Recharge/histDrawcharge?userid={$userid}">出金记录</a></li>
+              <li id="guide_bindcard"><a onclick="javascript:clickOper(4);">绑定银行卡</a></li>
+              <li id="guide_drawdeposit"><a onclick="javascript:clickOper(5);">出金</a></li>
+			  <li id="guide_histdrawcharge"><a onclick="javascript:clickOper(6);">出金记录</a></li>
             </ul>
           </li>
-		  
-          
+
           <li><a href="javascript:;" data-toggle="modal" data-target="#confirmModal"><i class="fa fa-sign-out"></i>退出</a></li>
         </ul>
-      </div><!--/.navbar-collapse -->
+      </div>
 
       <div class="templatemo-content-wrapper">
-        <div class="templatemo-content">
-          <ol class="breadcrumb">
-            <li><a href="index.html">账户管理</a></li>
-            <li><a href="#">个人信息</a></li>
-          </ol>
-               
-    
-
-          <div class="row">
-           
-            <div class="col-md-6">
-              <div class="templatemo-progress">
-                <div class="list-group">
-                  <a href="#" class="list-group-item active">
-                    <h4 class="list-group-item-heading">提示</h4>
-                    <p class="list-group-item-text">账户交易请确保该网站为指定合法网站。</p>
-                  </a>
-
-                </div>
-               
-              
-              </div> 
-            </div>
-          </div>
-          <div class="templatemo-panels">
-            <div class="row">
-              
-              <div class="col-md-6 col-sm-6 margin-bottom-30">
-                <div class="panel panel-primary">
-                  <div class="panel-heading">用户信息</div>
-                  <div class="panel-body">
-                    <table class="table table-striped">
-                      <thead>
-                        <tr>
-                          <th>属性</th>
-                          <th>内容</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-						<tr>
-                          <td>用户ID</td>
-                          <td>{$userid}</td>
-                        </tr>
-                        <tr>
-                          <td>用户名</td>
-                          <td>{$username}</td>
-                        </tr>
-						<tr>
-                          <td>用户类型</td>
-                          <td>{$usertype}</td>
-                        </tr>
-						<tr>
-                          <td>用户状态</td>
-                          <td>{$userstatus}</td>
-                        </tr>
-                        <tr>
-                          <td>邮箱</td>
-                          <td>{$email}</td>
-                        </tr>
-                        <tr>
-                          <td>杠杆比例</td>
-                          <td>{$levenum}</td>
-                        </tr>
-						<tr>
-                          <td>个人银行账户</td>
-                          <td>{$balance}</td>
-                        </tr>
-						<tr>
-                          <td>余额</td>
-                          <td>{$balance}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-                
-              </div>       
-            </div>
-			
-          </div>    
-        </div>
+         <text id="showInfo2"></text>
       </div>
-      <!-- Modal -->
+	  
+	  
+	
+	  
+      <footer class="templatemo-footer">
+        <div class="templatemo-copyright">
+          <p>Copyright &copy; 2084 Your Company Name</p>
+        </div>
+      </footer>
+	
+	<!-- Modal -->
       <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -146,23 +200,6 @@
           </div>
         </div>
       </div>
-	  
-      <footer class="templatemo-footer">
-        <div class="templatemo-copyright">
-          <p>Copyright &copy; 2084 Your Company Name</p>
-        </div>
-      </footer>
-    </div>
 
-    <script src="__PUBLIC__/js/jquery.min.js"></script>
-    <script src="__PUBLIC__/js/bootstrap.min.js"></script>
-    <script src="__PUBLIC__/js/Chart.min.js"></script>
-    <script src="__PUBLIC__/js/templatemo_script.js"></script>
-    <script type="text/javascript">
-    $('#signout').click(function () {
-      this.window.opener = null;  
-	  window.close();  
-	});
-  </script>
 </body>
 </html>

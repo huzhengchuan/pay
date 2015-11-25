@@ -13,7 +13,6 @@
 
 /* 1. CSS Imports
 --------------------------------------- */
-@import url('http://fonts.googleapis.com/css?family=Open Sans:300,400,700');
 @import url(font-awesome.min.css);
 @import url(bootstrap.min.css);
 
@@ -34,6 +33,7 @@ h1 { font-size: 24px; }
 .templatemo-content-wrapper {
     float: left;
     width: 100%;
+	margin-bottom: 43px;
 }
 .templatemo-content {
     margin-left: 235px;
