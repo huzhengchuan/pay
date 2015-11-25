@@ -11,11 +11,12 @@
   <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/easyui/themes/icon.css">
   <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/easyui/themes/color.css">
   <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/easyui/demo.css">
- 
   <script type="text/javascript" src="__PUBLIC__/js/jquery.min.js"></script>
-  <script type="text/javascript" src="__PUBLIC__/js/jquery.easyui.min.js"></script>
-  <script src="__PUBLIC__/js/bootstrap.min.js"></script>
-  <script src="__PUBLIC__/js/templatemo_script.js"></script>
+  <script type="text/javascript" src="__PUBLIC__/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="__PUBLIC__/js/templatemo_script.js"></script>
+  <script type="text/javascript" src="__PUBLIC__/js/usermanager_script.js"></script>
+  <script type="text/javascript" src="__PUBLIC__/js/jquery.easyui.min.js"></script> 
+  <script type="text/javascript" src="__PUBLIC__/js/jquery.json.js"></script>
 
   
 <script type="text/javascript">
@@ -81,11 +82,72 @@
       this.window.opener = null;  
 	  window.close();  
 	});
+	
+	function finish(data)
+	{
+		var divshow = $("#showInfo2");
+        divshow.text("");
+        divshow.append(data); 
+	}
+	function clearStyle_sys()
+	{
+		$("#guide_usermanger").attr("class", "");
+		$("#guide_drawcharge").attr("class", "");
+		$("#guide_recharge").attr("class", "");
+		$("#guide_pendingtrader").attr("class", "");
+		$("#guide_trader").attr("class", "");
+		$("#guide_histtrader").attr("class", "");
+	}
+	
+	function clickOper_sys(type)
+	{
+		var url_link;
+		
+		clearStyle_sys();
+		
+		switch(type)
+		{
+			case 1:
+				$("#guide_usermanger").attr("class", "active");
+				url_link = '/pay/index.php/Home/SysManager/userinfo';
+				break;
+			case 2:
+				$("#guide_drawcharge").attr("class", "active");
+				url_link = '/pay/index.php/Home/SysManager/sysDrawcharge';
+				break;
+			case 3:
+				$("#guide_recharge").attr("class", "active");
+				url_link = '/pay/index.php/Home/SysManager/sysRecharge';
+				break;
+			case 4:
+				$("#guide_pendingtrader").attr("class", "active");
+				url_link = '/pay/index.php/Home/SysManager/sysPendingTrader';
+				break;
+			case 5:
+				$("#guide_trader").attr("class", "active");
+				url_link = '/pay/index.php/Home/SysManager/sysTrader';
+				break;
+			case 6:
+				$("#guide_histtrader").attr("class", "active");
+				url_link = '/pay/index.php/Home/SysManager/sysHistTrader';
+				break;
+			default:
+				url_link = '/pay/index.php/Home/SysManager/error';
+				break;
+		}
+		
+		$.ajax({
+			type: 'POST',
+			url: url_link,
+			contentType: "application/x-www-form-urlencoded; charset=utf-8",
+			success: finish
+		});
+	}
  </script>
 	
 </head>
 	
-<body>
+<body onload="clickOper_sys(1)">
   <div id="main-wrapper">
     <div class="navbar navbar-inverse" role="navigation">
       <div class="navbar-header">
@@ -107,15 +169,15 @@
               <span class="btn btn-default">Go</span>
             </form>
           </li>
-          <li class="active"><a href="#"><i class="fa fa-home"></i>账户管理</a></li>
+          <li id="guide_usermanger"><a onclick="javascript:clickOper_sys(1);"><i class="fa fa-home"></i>账户管理</a></li>
 		  
 		  <li class="sub">
             <a href="javascript:;">
               <i class="fa fa-database"></i> 出金入金 <div class="pull-right"><span class="caret"></span></div>
             </a>
             <ul class="templatemo-submenu">
-              <li><a href="/pay/index.php/Home/SysManager/sysDrawcharge">出金</a></li>
-              <li><a href="/pay/index.php/Home/SysManager/sysRecharge">入金</a></li>
+              <li id="guide_drawcharge"><a onclick="javascript:clickOper_sys(2);">出金</a></li>
+              <li id="guide_recharge"><a onclick="javascript:clickOper_sys(3);">入金</a></li>
             </ul>
           </li>
 		  
@@ -124,47 +186,21 @@
               <i class="fa fa-database"></i> 实时外汇交易 <div class="pull-right"><span class="caret"></span></div>
             </a>
             <ul class="templatemo-submenu">
-              <li><a href="/pay/index.php/Home/SysManager/sysPendingTrader">挂单交易</a></li>
-              <li><a href="/pay/index.php/Home/SysManager/sysTrader">外汇交易</a></li>
+              <li id="guide_pendingtrader"><a onclick="javascript:clickOper_sys(4);">挂单交易</a></li>
+              <li id="guide_trader"><a onclick="javascript:clickOper_sys(5);">外汇交易</a></li>
             </ul>
           </li>
 		  
-		  <li><a href="/pay/index.php/Home/SysManager/sysHistTrader"><i class="fa fa-cog"></i>历史外汇交易</a></li>
+		  <li id="guide_histtrader"><a onclick="javascript:clickOper_sys(6);"><i class="fa fa-cog"></i>历史外汇交易</a></li>
           <li><a href="javascript:;" data-toggle="modal" data-target="#confirmModal"><i class="fa fa-sign-out"></i>退出</a></li>
         </ul>
-      </div><!--/.navbar-collapse -->
-	<form action="redirect.php" METHOD="POST" name="frm1">	
-      <div class="templatemo-content-wrapper">
-        <div class="templatemo-content">
-          <ol class="breadcrumb">
-            <li><a href="index.html">账户管理</a></li>
-            <li><a href="#">账户</a></li>
-            <li class="active"></li>
-          </ol>
-		
-		 <table id="dg" title="账户信息" class="easyui-datagrid" style="width:100%;height:100%" 
-			data-options="rownumbers:true,singleSelect:false,checkbox:true, url:'/pay/index.php/Home/SysManager/getUserList',method:'get',toolbar:toolbar,pagination:true">
-			<thead>
-						<tr>
-							<th field="ck" checkbox="true" width="3%"></th>
-							<th field="userid" width="5%">用户ID</th>
-							<th field="username" width="5%">用户名</th>
-							<th field="petname" width="8%">真实姓名</th>
-							<th field="phonenum" width="8%" sortable="true">手机号码</th>
-							<th field="email" width="10%">邮箱</th>
-							<th field="levenum" width="10%">杠杆比例</th>
-							<th field="balance" width="10%">余额</th>
-							<th field="bindbank" width="10%">绑定银行</th>
-							<th field="bindcardnum" width="15%">银行卡号</th>
-							<th field="usertype" width="10%">账户类型 </th>
-							<th field="userstatus" width="10%" sortable="true">账户状态</th>
-						</tr>
-					</thead>
-		</table>
-		
-		
-        </div>
       </div>
+
+	  <div class="templatemo-content-wrapper">
+         <text id="showInfo2"></text>
+      </div>
+	  
+
 
       <!-- Modal -->
       <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

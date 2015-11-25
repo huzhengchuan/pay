@@ -1,0 +1,46 @@
+  <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/easyui/themes/easyui.css">
+  <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/easyui/themes/icon.css">
+  <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/easyui/themes/color.css">
+  <link rel="stylesheet" type="text/css" href="__PUBLIC__/css/easyui/demo.css">
+  <script type="text/javascript" src="__PUBLIC__/js/jquery.easyui.min.js"></script>
+	
+	<form action="redirect.php" METHOD="POST" name="frm1">	
+      <div class="templatemo-content-wrapper">
+        <div class="templatemo-content">
+          <ol class="breadcrumb">
+            <li><a href="index.html">账户管理</a></li>
+            <li><a href="#">账户</a></li>
+            <li class="active"></li>
+          </ol>
+
+		
+		 <table id="dg" title="账户信息" class="easyui-datagrid" style="width:100%;height:100%" 
+			data-options="rownumbers:true,singleSelect:false,checkbox:true, url:'/pay/index.php/Home/SysManager/getUserList',method:'get',toolbar:toolbar,pagination:true">
+			<thead>
+						<tr>
+							<th field="ck" checkbox="true" width="3%"></th>
+							<th field="userid" width="5%">用户ID</th>
+							<th field="username" width="5%">用户名</th>
+							<th field="petname" width="8%">真实姓名</th>
+							<th field="phonenum" width="8%" sortable="true">手机号码</th>
+							<th field="email" width="10%">邮箱</th>
+							<th field="levenum" width="10%">杠杆比例</th>
+							<th field="balance" width="10%">余额</th>
+							<th field="bindbank" width="10%">绑定银行</th>
+							<th field="bindcardnum" width="15%">银行卡号</th>
+							<th field="usertype" width="10%">账户类型 </th>
+							<th field="userstatus" width="10%" sortable="true">账户状态</th>
+						</tr>
+					</thead>
+		</table>
+		
+		
+        </div>
+      </div>
+
+	 	
+		
+        </div>
+      </div>
+	  
+	  </form>
