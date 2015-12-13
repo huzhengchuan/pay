@@ -3,7 +3,7 @@
  * @Author: huzhengchuan
  * @Date:   2015-10-31 02:44:30
  * @Last Modified by:   anchen
- * @Last Modified time: 2015-11-25 22:41:14
+ * @Last Modified time: 2015-11-25 23:59:56
  */
 namespace Home\Controller;
 use Think\Controller;
@@ -369,6 +369,16 @@ class SysManagerController extends Controller {
         $this->display();
     }
 
+    public function mainpage()
+    {
+         $this->display('SysManager:mainpage');
+        return;
+    }
+
+    /**
+     * loginIn 用户登录
+     * @return [type] [description]
+     */
     public function loginIn()
     {
         $email = $_POST['email'];
@@ -384,12 +394,11 @@ class SysManagerController extends Controller {
         return;
 
     }
-    public function mainpage()
-    {
-         $this->display('SysManager:mainpage');
-        return;
-    }
 
+    /**
+     * auditUsers 用户审核接口
+     * @return [type] [description]
+     */
     public function auditUsers()
     {
         $userlist = $_POST['users'];
@@ -441,6 +450,10 @@ class SysManagerController extends Controller {
         return;
     }
 
+    /** 
+     * [auditDrawcharge description]
+     * @return [type] [description]
+     */
     public function auditDrawcharge()
     {
         $chargeslist = $_POST['charges'];

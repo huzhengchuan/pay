@@ -16,22 +16,26 @@ class UserManagerController extends Controller {
     }
 
 
-	public function index()
+	public function personInfo()
     {
         $userid=$_COOKIE['userid'];
         if($userid == NULL)
         {
-            $this->logerSer->logError("The user cookie is not exist.");
-            echo "The user is not exist.";
-            $this->display('mainpage');
-            return;
+            $userid = $_GET['userid'];
+
+            if($userid == NULL)
+            {
+                $this->logerSer->logError("The user cookie is not exist.");
+                $this->display('mainpage');
+                return;
+            }
+
         }
 
         $user = $this->userSer->getUserFromDBByUserId($userid);
         if($user == NULL)
         {
             $this->logerSer->logError("The user is not exist.");
-            echo "The user is not exist.";
             $this->display('mainpage');
             return;
         }
@@ -45,9 +49,6 @@ class UserManagerController extends Controller {
         $this->assign('balance', $user['balance']);
         $this->assign('usertype', $user['usertype']);
         $this->assign('userstatus', $user['userstatus']);
-
-
-        $this->assign('userid', $userid);
         $this->display('info');
         return;
     }
@@ -86,6 +87,14 @@ class UserManagerController extends Controller {
         $this->assign('balance', $user['balance']);
         $this->assign('usertype', $user['usertype']);
         $this->assign('userstatus', $user['userstatus']);
+        $this->display('mainpage');
+        return;
+    }
+
+    public function mp()
+    {
+        $userid = $_GET['userid'];
+        cookie('userid', $userid);
         $this->display('mainpage');
         return;
     }

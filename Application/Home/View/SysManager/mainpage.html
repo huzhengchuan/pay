@@ -33,48 +33,28 @@
 			}
 		];
 		
+		var toolbar_drawcharge = [
+			{
+				text:'Approve',
+				iconCls:'icon-add',
+				handler:function(){audit_drawcharge('1')}
+			},
+			{
+				text:'Reject',
+				iconCls:'icon-undo',
+				handler:function(){audit_drawcharge('2')}
+			}
+		];
+		
 		$('#dg').datagrid({
 			onSortColumn: function (sort, order) {
             fun1(sort, order);
 			}
 		})
 		
-		function audit(flag){
-				var row = $('#dg').datagrid('getChecked');
-				var i = 0;
-		        var str = "";
-		        for(i;i<row.length;i++)
-				{
-		            str += row[i].userid;
-		            if(i < row.length-1){
-		                str += ',';
-		            }else{
-		                break;
-		            }
-		        }	
-				if (row.length== 0) {
-					alert("请选择要审批的用户");
-					return;
-				}
-				if (row.length>0) {  
-					$.messager.confirm('Confirm', '确定审批选择的用户?', function(r) {
-						if (r) 
-						{
-							 $.post('/pay/index.php/Home/SysManager/auditUsers', 
-								{ users : str, flag: flag
-								}, function(result) {
-									$.messager.show({
-										title:'操作提示',
-										msg:result,
-										showType:'show'
-									});
-									$('#dg').datagrid('reload');}
-								  );
-						}
-					});
-				}
-				
-			}
+		
+		
+		
 </script>
 
 <script type="text/javascript">
