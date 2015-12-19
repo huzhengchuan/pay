@@ -22,7 +22,7 @@ return array(
     'MAIL_HOST'                     =>'smtp.qq.com',
     'MAIL_SMTPAUTH'                 =>TRUE,
     'MAIL_USERNAME'                 =>'875161027@qq.com',
-    'MAIL_PASSWORD'                 =>'HzcloveWxt130506',
+    'MAIL_PASSWORD'                 =>'xxxx',
     'MAIL_SECURE'                   =>'tls',
     'MAIL_CHARSET'                  =>'utf-8',
     'MAIL_ISHTML'                   =>TRUE,
